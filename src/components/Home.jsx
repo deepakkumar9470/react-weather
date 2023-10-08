@@ -1,7 +1,7 @@
 import WeatherCard from "./WeatherCard";
 import UnitSwitcher from "./UnitSwitcher";
-
-const Home = ({ weather, units, days, handleUnitSwitch }) => {
+import Spinner from './Spinner'
+const Home = ({ weather, units, days, handleUnitSwitch,loading }) => {
   const tempUnits = units === "metric" ? "°C" : "°F";
   const windUnits = units === "metric" ? "m/s" : "m/h";
   
@@ -68,17 +68,27 @@ const Home = ({ weather, units, days, handleUnitSwitch }) => {
     return { weekday, temperature, iconUrl };
   });
 
+  if(!weather)  {
+  return( 
+  <div className="flex items-center justify-center flex-col">
+         <p className="text-xl mt-10 mb-10">No weather data found</p>
+         <Spinner/>
+  </div>
+  )
+  }
   return (
     <>
       <UnitSwitcher handleUnitSwitch={handleUnitSwitch} />
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 py-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-5 py-5">
       
        
-        <p className=" text-xl text-gray-500 font-semibold mt-6">
+        <p className=" text-xl text-center text-gray-500 font-semibold mt-2 md:mt-6">
         Weekdays weather report
-      </p>
-          {weekdayData?.map((data, index) => (
-            <div key={index} className="w-full flex items-center flex-col gap-3  md:w-[150px] md:h-[150px]  p-2 bg-white rounded-2xl shadow-md cursor-pointer">
+       </p>
+          {!weekdayData ? <p className=" text-xl text-gray-500 font-semibold">No data found</p> : <Spinner/> ? 
+          
+          weekdayData?.map((data, index) => (
+            <div key={index} className="w-[300px] flex items-center flex-col gap-3  md:w-[150px] md:h-[150px]  p-2 bg-white rounded-2xl shadow-md cursor-pointer">
               <p className="text-xl font-extralight">
                 {data?.weekday} 
               </p>
@@ -88,17 +98,18 @@ const Home = ({ weather, units, days, handleUnitSwitch }) => {
                 src={data?.iconUrl} alt={data?.weekday}
               />}
             </div>
-          ))}
+          )):null}
        
         <div>
         </div>
       </div>
 
-      <h2 className="my-5 text-3xl text-black font-light">
+      <h2 className="my-5 text-center md:text-left text-3xl text-black font-light">
         Today's Highlights
       </h2>
       <div className=" grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-        {weathercards?.map((w) => (
+        {!weather ?<p className=" text-xl text-gray-500 font-semibold">No data found</p> :
+        weathercards?.map((w) => (
           <WeatherCard key={w.id} weather={w} units={units} />
         ))}
       </div>

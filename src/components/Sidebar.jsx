@@ -51,7 +51,10 @@ const Sidebar = ({city,setCity,weather,units,handleSearch}) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4">
+     {
+      !weather ? <p className="text-xl font-semibold">No Data found</p> :
+      <>
+          <div className="flex flex-col gap-4">
          <img
           className="w-[200px] h-[200px] object-contain cursor-pointer"
           src={weather?.iconUrl ? weather?.iconUrl : "/icons/sun2.png"}
@@ -83,14 +86,16 @@ const Sidebar = ({city,setCity,weather,units,handleSearch}) => {
           <span className="text-[18px]">Cloudly - {weather?.all}%</span>
         </div>
       </div>
-      <div className="w-[250px] h-[150px] flex items-center justify-center relative">
+      <div className="w-[350px] h-[80px] md:w-[250px] md:h-[150px] mb-2  flex items-center justify-center relative">
         <img
-          className="w-full h-full object-cover  rounded-3xl mb-2"
+          className="w-full h-full object-cover rounded-2xl  md:rounded-3xl mb-2"
           src={getWeatherImage(weather?.description)}
           alt={weather?.description}
         />
         <span className="text-white text-2xl font-semibold absolute">{weather?.name} , {weather?.country}</span>
       </div>
+      </>
+     }
     </div>
   );
 };

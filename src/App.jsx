@@ -10,15 +10,19 @@ function App() {
   const [weatherData, setWeatherData] = useState({});
   const [daysData, setDaysData] = useState([]);
   const [units, setUnits] = useState("metric");
+  const [loading,setLoading] = useState(false)
 
   const fetchWeatherData = async () =>{
+    setLoading(true)
       try {
         const data = await getWeatherData(city,units )
         setWeatherData(data)
         const days = await getDaysData(city,units)
-        setDaysData(days.list)   
+        setDaysData(days.list)
+        setLoading(false)   
       } catch (error) {
         console.log(error)
+        setLoading(false)
       }
   }
   useEffect(() => {
@@ -39,6 +43,7 @@ function App() {
     setUnits(isCelcious ? "metric" : "imperial");
   }
 
+
   return (
       <div className='flex flex-col md:flex-row'>
 
@@ -52,11 +57,12 @@ function App() {
             />
           </div>
           <div className='w-full md:w-[78%] h-screen flex-6 bg-bgMain pt-10 px-6'>
-            <Home 
+           <Home 
             units={units}
             weather={weatherData}
             handleUnitSwitch={handleUnitSwitch}
-            days={daysData}/>
+            days={daysData}
+            loading={loading}/>
           </div>
 
       </div>

@@ -46,6 +46,7 @@ export const getWeatherData = async (city, units="metric") =>{
             all,
             iconUrl : makeIconUrl(icon)
         }
+
       } catch (error) {
         console.log(error)
       }
